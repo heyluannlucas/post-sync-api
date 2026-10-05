@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: post-sync-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postsync}
+    username: ${DB_USER:postsync}
+    password: ${DB_PASSWORD:postsync}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        max-page-size: 100
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+app:
+  external-api:
+    base-url: ${EXTERNAL_API_URL:https://jsonplaceholder.typicode.com}
+    connect-timeout: 3s
+    read-timeout: 10s
